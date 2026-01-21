@@ -70,7 +70,10 @@
 		"US": "North America", "CA": "North America", "MX": "North America",
 		"GT": "North America", "BZ": "North America", "HN": "North America",
 		"SV": "North America", "NI": "North America", "CR": "North America",
-		"PA": "North America", "CO": "South America", "EC": "South America",
+		"PA": "North America", "PR": "North America", "AW": "North America",
+		"BS": "North America", "BL": "North America", "SX": "North America",
+		"TC": "North America", "BT": "Asia",
+		"CO": "South America", "EC": "South America",
 		"PE": "South America", "BO": "South America", "CL": "South America",
 		"AR": "South America", "UY": "South America", "BR": "South America",
 		"PY": "South America", "VE": "South America", "GB": "Europe",
@@ -133,6 +136,8 @@
 		"ZM": "Zambia", "MW": "Malawi", "TZ": "Tanzania", "KE": "Kenya",
 		"UG": "Uganda", "RW": "Rwanda", "ET": "Ethiopia", "GH": "Ghana",
 		"SN": "Senegal", "NG": "Nigeria", "CM": "Cameroon", "MU": "Mauritius",
-		"MG": "Madagascar", "SC": "Seychelles"
+		"MG": "Madagascar", "SC": "Seychelles",
+		"BT": "Bhutan", "AW": "Aruba", "BS": "Bahamas", "BL": "Saint Barthélemy",
+		"SX": "Sint Maarten", "TC": "Turks and Caicos", "PR": "Puerto Rico"
 	}
 }
