@@ -21,7 +21,7 @@ function assignColors(visitedCountries: string[]): Map<string, string> {
 function computeStats(user: User): ComputedStats {
 	const continents = citiesData.continentsByCountry as Record<string, string>;
 	const countryNames = citiesData.countryNames as Record<string, string>;
-	const topCities = citiesData.topCitiesByPopulation;
+	const capitalCities = (citiesData as { capitalCities: Array<{ city: string; country: string; population: number }> }).capitalCities;
 
 	// Countries visited
 	const countriesVisited = user.visitedCountries.length;
@@ -35,31 +35,33 @@ function computeStats(user: User): ComputedStats {
 	// Total cities
 	const totalCities = user.visitedCities.length;
 
-	// Biggest cities visited (from top world cities)
+	// Biggest capitals visited
 	const visitedCityNames = new Set(user.visitedCities.map(c => c.city));
-	const biggestCities = topCities
+	const biggestCapitals = capitalCities
 		.filter(c => visitedCityNames.has(c.city))
 		.slice(0, 10)
 		.map(c => c.city);
 
 	// Most visited country (excluding home country)
-	const citiesByCountry = new Map<string, number>();
+	const citiesByCountry = new Map<string, string[]>();
 	for (const city of user.visitedCities) {
 		if (city.country !== user.homeCountry) {
-			citiesByCountry.set(city.country, (citiesByCountry.get(city.country) || 0) + 1);
+			const existing = citiesByCountry.get(city.country) || [];
+			existing.push(city.city);
+			citiesByCountry.set(city.country, existing);
 		}
 	}
 	let mostVisitedCode = '';
-	let mostVisitedCount = 0;
-	for (const [code, count] of citiesByCountry) {
-		if (count > mostVisitedCount) {
+	let mostVisitedCities: string[] = [];
+	for (const [code, cities] of citiesByCountry) {
+		if (cities.length > mostVisitedCities.length) {
 			mostVisitedCode = code;
-			mostVisitedCount = count;
+			mostVisitedCities = cities;
 		}
 	}
 	const mostVisitedCountry = {
 		name: countryNames[mostVisitedCode] || mostVisitedCode,
-		cities: mostVisitedCount
+		cities: mostVisitedCities
 	};
 
 	// Recent adventures (last 5)
@@ -76,7 +78,7 @@ function computeStats(user: User): ComputedStats {
 		countriesVisited,
 		continentsVisited,
 		totalCities,
-		biggestCities,
+		biggestCapitals,
 		mostVisitedCountry,
 		recentAdventures
 	};

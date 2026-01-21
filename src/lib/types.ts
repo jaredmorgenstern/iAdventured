@@ -14,7 +14,7 @@ export interface ComputedStats {
 	countriesVisited: number;
 	continentsVisited: number;
 	totalCities: number;
-	biggestCities: string[];
-	mostVisitedCountry: { name: string; cities: number };
+	biggestCapitals: string[];
+	mostVisitedCountry: { name: string; cities: string[] };
 	recentAdventures: { city: string; country: string; date: string }[];
 }

@@ -40,27 +40,27 @@
 		</div>
 
 		<div class="stat stat--list" style="--i: 3">
-			<span class="stat-label">Biggest Cities</span>
-			<ol>
-				{#each data.stats.biggestCities as city, i}
-					<li>{i + 1}. {city}</li>
-				{/each}
-			</ol>
-		</div>
-
-		<div class="stat" style="--i: 4">
-			<span class="stat-label">Most Visited</span>
-			<span class="stat-country">{data.stats.mostVisitedCountry.name}</span>
-			<span class="stat-detail">{data.stats.mostVisitedCountry.cities} cities</span>
-		</div>
-
-		<div class="stat stat--list" style="--i: 5">
 			<span class="stat-label">Recent Adventures</span>
 			<ul>
 				{#each data.stats.recentAdventures as adventure}
 					<li>{adventure.city}, {adventure.country}</li>
 				{/each}
 			</ul>
+		</div>
+
+		<div class="stat" style="--i: 4">
+			<span class="stat-label">Most Visited Country</span>
+			<span class="stat-country">{data.stats.mostVisitedCountry.name}</span>
+			<p class="stat-cities">{data.stats.mostVisitedCountry.cities.join(', ')}</p>
+		</div>
+
+		<div class="stat stat--list" style="--i: 5">
+			<span class="stat-label">Biggest Capitals</span>
+			<ol>
+				{#each data.stats.biggestCapitals as city, i}
+					<li>{i + 1}. {city}</li>
+				{/each}
+			</ol>
 		</div>
 	</div>
 </main>
