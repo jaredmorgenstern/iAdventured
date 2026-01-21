@@ -17,9 +17,6 @@
 <main>
 	<header class="header">
 		<h1 class="header-name">{data.user.name}</h1>
-		{#if data.user.tagline}
-			<p class="header-tagline">{data.user.tagline}</p>
-		{/if}
 	</header>
 
 	<div class="map-container">
