@@ -23,7 +23,7 @@
 	</header>
 
 	<div class="map-container">
-		<WorldMap colors={data.colors} />
+		<WorldMap colors={data.colors} countries={data.countries} />
 	</div>
 
 	<div class="stats-grid">

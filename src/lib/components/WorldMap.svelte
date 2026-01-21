@@ -1,33 +1,25 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { geoPath } from 'd3-geo';
 	import { geoRobinson } from 'd3-geo-projection';
-	import { feature } from 'topojson-client';
 	import type { Feature, Geometry } from 'geojson';
-	import type { Topology, GeometryCollection } from 'topojson-specification';
 
 	let {
 		colors,
+		countries,
 		width = 960,
 		height = 500
 	}: {
 		colors: Record<string, string>;
+		countries: Feature<Geometry>[];
 		width?: number;
 		height?: number;
 	} = $props();
 
-	let countries = $state<Feature<Geometry>[]>([]);
 	let hoveredId = $state<string | null>(null);
 
-	// Create projection once
-	let projection = $state(geoRobinson());
-
-	$effect(() => {
-		projection.fitSize([width, height], { type: 'Sphere' });
-	});
-
-	// Path generator
-	let pathGenerator = $derived(geoPath(projection));
+	// Create projection and path generator
+	const projection = geoRobinson().fitSize([width, height], { type: 'Sphere' });
+	const pathGenerator = geoPath(projection);
 
 	// Separate hovered country for z-order (render last)
 	let regularCountries = $derived(
@@ -36,16 +28,6 @@
 	let hoveredCountry = $derived(
 		hoveredId ? countries.find(c => c.id === hoveredId) : null
 	);
-
-	onMount(async () => {
-		const response = await fetch('/countries-110m.json');
-		const topology: Topology<{ countries: GeometryCollection }> = await response.json();
-		const geojson = feature(topology, topology.objects.countries);
-
-		if (geojson.type === 'FeatureCollection') {
-			countries = geojson.features as Feature<Geometry>[];
-		}
-	});
 
 	// Convert numeric ID to ISO alpha-2 code
 	// TopoJSON uses numeric IDs from Natural Earth
@@ -77,7 +59,7 @@
 		'764': 'TH', '768': 'TG', '780': 'TT', '784': 'AE', '788': 'TN', '792': 'TR', '795': 'TM',
 		'800': 'UG', '804': 'UA', '807': 'MK', '818': 'EG', '826': 'GB', '834': 'TZ', '840': 'US',
 		'854': 'BF', '858': 'UY', '860': 'UZ', '862': 'VE', '887': 'YE', '894': 'ZM',
-		'-99': 'CY' // Northern Cyprus often has this code
+		'-99': 'CY'
 	};
 
 	function getCountryCode(id: string | number | undefined): string {

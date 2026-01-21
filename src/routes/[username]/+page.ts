@@ -2,6 +2,8 @@ import type { PageLoad } from './$types';
 import type { User, ComputedStats } from '$lib/types';
 import { error } from '@sveltejs/kit';
 import citiesData from '$lib/data/cities.json';
+import { feature } from 'topojson-client';
+import type { Topology, GeometryCollection } from 'topojson-specification';
 
 const USERNAME_PATTERN = /^[a-zA-Z0-9_-]{3,30}$/;
 
@@ -80,7 +82,7 @@ function computeStats(user: User): ComputedStats {
 	};
 }
 
-export const load: PageLoad = async ({ params }) => {
+export const load: PageLoad = async ({ params, fetch }) => {
 	if (!USERNAME_PATTERN.test(params.username)) {
 		throw error(404, 'User not found');
 	}
@@ -89,10 +91,16 @@ export const load: PageLoad = async ({ params }) => {
 		const userData = await import(`../../lib/data/users/${params.username}.json`);
 		const user: User = userData.default;
 
+		// Load map data at build time
+		const mapResponse = await fetch('/countries-110m.json');
+		const topology: Topology<{ countries: GeometryCollection }> = await mapResponse.json();
+		const geojson = feature(topology, topology.objects.countries);
+		const countries = geojson.type === 'FeatureCollection' ? geojson.features : [];
+
 		const stats = computeStats(user);
 		const colors = assignColors(user.visitedCountries);
 
-		return { user, stats, colors: Object.fromEntries(colors) };
+		return { user, stats, colors: Object.fromEntries(colors), countries };
 	} catch {
 		throw error(404, 'User not found');
 	}
