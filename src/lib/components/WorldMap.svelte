@@ -64,8 +64,9 @@
 
 	function getCountryCode(id: string | number | undefined): string {
 		if (id === undefined) return '';
-		const strId = String(id);
-		return numericToAlpha2[strId] || '';
+		// Handle both "036" and "36" formats by parsing as integer
+		const numId = String(parseInt(String(id), 10));
+		return numericToAlpha2[numId] || '';
 	}
 </script>
 

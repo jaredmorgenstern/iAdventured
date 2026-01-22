@@ -55,7 +55,7 @@
 		</div>
 
 		<div class="stat stat--list" style="--i: 5">
-			<span class="stat-label">Biggest Capitals</span>
+			<span class="stat-label">Biggest Capitals Seen</span>
 			<ol>
 				{#each data.stats.biggestCapitals as city, i}
 					<li>{i + 1}. {city}</li>

@@ -64,14 +64,15 @@ function computeStats(user: User): ComputedStats {
 		cities: mostVisitedCities
 	};
 
-	// Recent adventures (last 5)
-	const sortedCities = [...user.visitedCities].sort((a, b) =>
-		b.date.localeCompare(a.date)
+	// Recent adventures (last 5) - only include cities with dates
+	const citiesWithDates = user.visitedCities.filter(c => c.date);
+	const sortedCities = [...citiesWithDates].sort((a, b) =>
+		b.date!.localeCompare(a.date!)
 	);
 	const recentAdventures = sortedCities.slice(0, 5).map(c => ({
 		city: c.city,
 		country: countryNames[c.country] || c.country,
-		date: c.date
+		date: c.date!
 	}));
 
 	return {
